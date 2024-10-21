@@ -2,10 +2,12 @@
   <i :class="['fas', iconClass]" :style="{ color: color, fontSize: fontSize }"></i>
 </template>
 <script setup lang="ts">
+import type { PropType } from 'vue';
+
 
 const props = defineProps({
   iconClass: {
-    type: String,
+    type: String as PropType<string | null>,
     required: true
   },
   color: {
@@ -14,7 +16,7 @@ const props = defineProps({
   },
   fontSize: {
     type: String,
-    default: '50px'
+    default: '20px'
   },
   // width: {
   //   type: String,

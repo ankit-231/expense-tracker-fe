@@ -1,4 +1,5 @@
 import type { RouteLocationNormalized } from "vue-router";
+import toast from "@/core/services/toast";
 
 export function isEmpty(obj: Object | undefined | null) {
   if (obj === undefined || obj === null) {
@@ -34,6 +35,13 @@ export function generatePriorityColors(priority: string) {
 //   return errors;
 // };
 
+export function toastSerializerError(errors: Record<string, string[]>) {
+  Object.entries(errors).forEach(([key, value]) => {
+    const messages = value.join(" ");
+    toast.add({ severity: "error", summary: `${key}:`, detail: messages });
+  });
+}
+
 /**
  * This function is used to determine if a user has access to a particular route.
  * It should be used for role based authentication only as it assumes the user is already authenticated.
@@ -49,6 +57,29 @@ export const getAccessInfo = (
   // imp: this function should be used for authenticated routes only
   return true;
 };
+
+export function getTransactionDateTime(
+  transaction_date: string,
+  transaction_time: string
+) {
+  return new Date(transaction_date + " " + transaction_time);
+}
+
+export function getTransactionDate(transaction_date_time: Date): string {
+  const year = transaction_date_time.getFullYear();
+  const month = String(transaction_date_time.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+  const day = String(transaction_date_time.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`; // Format as YYYY-MM-DD
+}
+
+export function getTransactionTime(transaction_date_time: Date): string {
+  const hours = String(transaction_date_time.getHours()).padStart(2, "0");
+  const minutes = String(transaction_date_time.getMinutes()).padStart(2, "0");
+  const seconds = String(transaction_date_time.getSeconds()).padStart(2, "0");
+
+  return `${hours}:${minutes}:${seconds}`; // Format as HH:MM:SS
+}
 
 const utilities = { isEmpty, generatePriorityColors };
 

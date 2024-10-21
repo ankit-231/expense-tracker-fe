@@ -12,6 +12,7 @@ import { useAuthStore } from "@/stores/auth/auth";
 
 // primevue start
 import Ripple from "primevue/ripple";
+import Popover from "primevue/popover";
 import StyleClass from "primevue/styleclass";
 import ToastService from "primevue/toastservice";
 import AutoComplete from "primevue/autocomplete";
@@ -25,7 +26,7 @@ import BlockUI from "primevue/blockui";
 import Button from "primevue/button";
 import ButtonGroup from "primevue/buttongroup";
 import Breadcrumb from "primevue/breadcrumb";
-import Calendar from "primevue/calendar";
+import DatePicker from "primevue/datepicker";
 import Card from "primevue/card";
 // import Chart from "primevue/chart";
 import CascadeSelect from "primevue/cascadeselect";
@@ -86,6 +87,7 @@ import ProgressSpinner from "primevue/progressspinner";
 import Rating from "primevue/rating";
 import RadioButton from "primevue/radiobutton";
 import Row from "primevue/row";
+import Select from "primevue/select";
 import SelectButton from "primevue/selectbutton";
 import ScrollPanel from "primevue/scrollpanel";
 import ScrollTop from "primevue/scrolltop";
@@ -127,7 +129,6 @@ router.beforeEach(async (to, from, next) => {
   const store = useAuthStore();
 
   const { getUserMe, getIsAuthenticated } = storeToRefs(store);
-
 
   // check for login page
   if (to.name === "login") {
@@ -194,7 +195,7 @@ app.component("BlockUI", BlockUI);
 app.component("Breadcrumb", Breadcrumb);
 app.component("Button", Button);
 app.component("ButtonGroup", ButtonGroup);
-app.component("Calendar", Calendar);
+app.component("DatePicker", DatePicker);
 app.component("Card", Card);
 // app.component('Chart', Chart);
 app.component("Carousel", Carousel);
@@ -248,11 +249,13 @@ app.component("Panel", Panel);
 app.component("PanelMenu", PanelMenu);
 app.component("Password", Password);
 app.component("PickList", PickList);
+app.component("Popover", Popover);
 app.component("ProgressBar", ProgressBar);
 app.component("ProgressSpinner", ProgressSpinner);
 app.component("RadioButton", RadioButton);
 app.component("Rating", Rating);
 app.component("Row", Row);
+app.component("Select", Select);
 app.component("SelectButton", SelectButton);
 app.component("ScrollPanel", ScrollPanel);
 app.component("ScrollTop", ScrollTop);

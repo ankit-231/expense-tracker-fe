@@ -10,18 +10,7 @@ export type RefreshTokenPayload = {
   refreshToken: string;
 };
 
-export type TransactionDetail = {
-  id: number;
-  wallet: number;
-  transaction_date: string;
-  transaction_time: string;
-  transaction_type: string;
-  amount: string;
-  description: string;
-  category: string;
-  note: string;
-  image: string;
-};
+
 
 export interface SideBarNavItemType {
   label: string;
@@ -57,4 +46,10 @@ export interface ChangePasswordPayload {
   old_password: string;
   new_password: string;
   confirm_password: string;
+}
+
+export interface IconDetail {
+  id: number;
+  name: string;
+  class_name: string;
 }

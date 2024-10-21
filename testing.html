@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiple Sticky Elements</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      height: 5000px;
+      /* To create a scrollable area */
+      padding: 20px;
+      background: #e2e2e2;
+    }
+
+    .sticky {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 10px 0;
+    }
+
+    .sticky1 {
+      position: sticky;
+      top: 100px;
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 10px 0;
+    }
+
+    .content {
+      height: 2000px;
+      /* Just to create scrollable content */
+      background: #f4f4f4;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    
+    <div class="content">
+      <div class="sticky">Sticky Element 1</div>
+      Scroll down...
+
+    </div>
+    <div class="sticky1">Sticky Element 2</div>
+    <div class="content">Scroll down...</div>
+  </div>
+</body>
+
+</html>

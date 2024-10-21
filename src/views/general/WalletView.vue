@@ -3,7 +3,7 @@
     <div class="bg-white shadow-lg rounded-md p-4">
       <h1 class="text-3xl font-bold mb-4">Your Wallets</h1>
       <WalletModal :wallets="getWalletList" @wallet-status-changed="changeWalletStatus" @edit-wallet="editWallet"
-        @add-wallet="addWallet" @delete-wallet="deleteWallet" />
+        @add-wallet="addWallet" @delete-wallet="deleteWallet" :icons="getIconList" v-if="getIconList" />
     </div>
   </div>
 </template>
@@ -14,11 +14,11 @@ import type { WalletDetail, WalletPayload } from '@/core/dtos/wallet';
 import { useWalletStore } from '@/stores/wallet/wallet';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
-import dialog from '@/core/services/dialog';
-import dialogTwo from '@/core/services/dialog-two';
+import customDialog from '@/core/services/dialog';
+import { useCoreStore } from '@/stores/core/core';
 
 const deleteWallet = async (wallet: WalletDetail) => {
-  dialog.show({
+  customDialog.show({
     title: "Confirmation",
     message: "Are you sure you want to proceed?",
     onConfirm: async () => {
@@ -31,8 +31,13 @@ const deleteWallet = async (wallet: WalletDetail) => {
 const walletStore = useWalletStore();
 const { getWalletList } = storeToRefs(walletStore);
 
+const coreStore = useCoreStore();
+const { getIconList } = storeToRefs(coreStore);
+
 onMounted(async () => {
   await walletStore.fetchWalletList()
+  await coreStore.fetchIconList()
+
 })
 
 const changeWalletStatus = async (wallet: WalletDetail) => {

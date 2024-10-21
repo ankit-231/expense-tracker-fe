@@ -10,7 +10,7 @@ const dialogState = reactive({
 
 const getDialog = () => app.config.globalProperties.$dialog;
 
-const dialog = {
+const customDialog = {
   show(options: { title: string; message: string; onConfirm?: () => void }) {
     dialogState.visible = true;
     dialogState.title = options.title;
@@ -28,5 +28,5 @@ const dialog = {
   },
 };
 
-export default dialog;
+export default customDialog;
 export { dialogState };

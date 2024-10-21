@@ -6,6 +6,7 @@ import toast from "@/core/services/toast";
 // import { getFormData } from '@/core/services/utilities'
 import jwtServices from "@/core/services/jwt-token";
 import router from "@/router";
+import { isEmpty, toastSerializerError } from "@/core/services/utilities";
 
 export const useWalletStore = defineStore("wallet", {
   state: () => ({
@@ -76,9 +77,13 @@ export const useWalletStore = defineStore("wallet", {
           toast.success(response.data.message || "Created");
         })
         .catch((error) => {
-          this.errors = error?.response?.data?.data;
+          this.errors = error?.response?.data?.extra;
+          if (!isEmpty(this.errors?.fields)) {
+            toastSerializerError(this.errors?.fields);
+          } else {
+            toast.error(error.response?.data?.message || "Error");
+          }
           this.loadingStatus = false;
-          toast.error(error.response?.data?.message || "Error");
         });
     },
     async updateWallet(id: number, body: WalletPayload) {

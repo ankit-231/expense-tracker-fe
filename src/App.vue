@@ -14,6 +14,7 @@ import { dialogState, default as dialog } from "@/core/services/dialog";
         <Button severity="danger" label="Cancel" @click="dialog.hide" />
       </template>
     </Dialog>
+    <DynamicDialog />
     <RouterView />
   </div>
 

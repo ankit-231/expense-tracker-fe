@@ -2,12 +2,14 @@ import { defineStore } from "pinia";
 import client from "@/core/services/client";
 import { api } from "@/core/api-endpoints/api";
 import type {
+  TransactionCategoryDetail,
   TransactionDetailPaginated,
   TransactionPaginated,
   TransactionPayload,
 } from "@/core/dtos/transaction";
 import toast from "@/core/services/toast";
 import router from "@/router";
+import type { TransactionType } from "@/core/constants/general";
 
 export const useTransactionStore = defineStore("transaction", {
   state: () => ({
@@ -15,6 +17,7 @@ export const useTransactionStore = defineStore("transaction", {
     loadingStatus: false,
     transactionListPaginated: [] as TransactionPaginated[],
     transactionDetailPaginated: null as null | TransactionPaginated,
+    transactionCategoryList: [] as TransactionCategoryDetail[],
   }),
 
   getters: {
@@ -29,6 +32,9 @@ export const useTransactionStore = defineStore("transaction", {
     },
     getTransactionDetailPaginated(state) {
       return state.transactionDetailPaginated;
+    },
+    getTransactionCategoryList(state) {
+      return state.transactionCategoryList;
     },
   },
 
@@ -69,33 +75,37 @@ export const useTransactionStore = defineStore("transaction", {
     async createTransaction(body: TransactionPayload) {
       this.errors = null;
       this.loadingStatus = true;
-      await client
+      return await client
         .post(api.transaction.create, body)
         .then((response) => {
           this.loadingStatus = false;
           toast.success(response.data.message || "Created");
-          router.push({ name: "transaction" });
+          // router.push({ name: "transaction" });
+          return true;
         })
         .catch((error) => {
           this.errors = error?.response?.data?.data;
           this.loadingStatus = false;
           toast.error(error.response?.data?.message || "Error");
+          return false;
         });
     },
     async updateTransaction(id: number, body: TransactionPayload) {
       this.errors = null;
       this.loadingStatus = true;
-      await client
+      return await client
         .post(api.transaction.update(id), body)
         .then((response) => {
           this.loadingStatus = false;
           toast.success(response.data.message || "Updated");
-          router.push({ name: "transaction" });
+          // router.push({ name: "transaction" });
+          return true;
         })
         .catch((error) => {
           this.errors = error?.response?.data?.data;
           this.loadingStatus = false;
           toast.error(error.response?.data?.message || "Error");
+          return false;
         });
     },
     async deleteTransaction(id: number) {
@@ -110,6 +120,22 @@ export const useTransactionStore = defineStore("transaction", {
         })
         .catch((error) => {
           this.errors = error?.response?.data?.data;
+          this.loadingStatus = false;
+          toast.error(error.response?.data?.message || "Error");
+        });
+    },
+
+    async fetchTransactionCategoryList(category_type: TransactionType) {
+      this.errors = null;
+      this.loadingStatus = true;
+      await client
+        .get(api.transaction.category.list(category_type))
+        .then((response) => {
+          this.loadingStatus = false;
+          this.transactionCategoryList = response.data.data;
+        })
+        .catch((error) => {
+          this.errors = error;
           this.loadingStatus = false;
           toast.error(error.response?.data?.message || "Error");
         });
