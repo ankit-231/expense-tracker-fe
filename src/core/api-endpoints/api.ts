@@ -7,11 +7,12 @@ export const api = {
   },
   user: {
     userDetail: "users/self/",
-    create: "user/create/",
-    edit: (id: string) => `user/update/${id}/`,
-    delete: "user/delete/{:id}/",
-    detail: "user/get/{:id}/",
-    self: "user/me/{:id}/",
+    // create: "user/create/",
+    // edit: (id: string) => `user/update/${id}/`,
+    // delete: "user/delete/{:id}/",
+    // detail: "user/get/{:id}/",
+    // self: "user/me/{:id}/",
+    financialDetail: "users/financial-detail/",
   },
   core: {
     icon: {

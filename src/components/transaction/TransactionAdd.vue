@@ -101,6 +101,7 @@ import type { TransactionDetail, TransactionPayload } from '@/core/dtos/transact
 import { getTransactionDate, getTransactionDateTime, getTransactionTime } from '@/core/services/utilities';
 import { get } from 'node_modules/axios/index.cjs';
 import WalletIcon from '@/components/wallet/WalletIcon.vue';
+import { useUserStore } from '@/stores/users/user';
 
 let { values, errors, handleSubmit, defineField, setErrors, setValues, validate, } = useForm({
   validationSchema: transactionCreateSchema,
@@ -143,6 +144,7 @@ onMounted(() => {
 
 const transactionStore = useTransactionStore()
 const walletStore = useWalletStore()
+const userStore = useUserStore()
 
 const { getWalletList } = storeToRefs(walletStore);
 const { getTransactionCategoryList } = storeToRefs(transactionStore);
@@ -174,7 +176,9 @@ const handleAddTransaction = handleSubmit(async (values) => {
     success = await transactionStore.createTransaction(values as TransactionPayload)
   }
   if (success) {
+    await userStore.fetchFinancialDetail()
     await transactionStore.fetchTransactionListPaginated()
+
     dialogRef.value.close()
   }
 })

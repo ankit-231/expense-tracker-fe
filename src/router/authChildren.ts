@@ -48,7 +48,7 @@ const authChildren: Array<RouteRecordRaw> = [
   {
     path: "settings",
     name: "settings",
-    component: () => import("@/views/general/WalletView.vue"),
+    component: () => import("@/views/general/SettingsView.vue"),
     meta: {
       // breadcrumbs: [
       //   { label: "Home", url: "/" },

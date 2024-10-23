@@ -1,7 +1,10 @@
 <template>
   <div class="h-full">
     <div class="h-[10%] flex justify-between items-center">
-      <div class="text-2xl">Your Transactions</div>
+      <div class="flex items-center justify-center gap-x-5">
+        <div class="text-2xl font-bold">Your Transactions</div>
+        <div class="text-sm font-bold">Balance: {{ getUserCurrency }} {{ getFinancialDetail.balance }}</div>
+      </div>
       <div>
         <Button @click="showTransactionModal()" class="ml-4" label="Add Transaction" />
 
@@ -25,6 +28,8 @@ import type { TransactionPayload } from '@/core/dtos/transaction';
 import type { TransactionDetail } from '@/core/dtos/transaction';
 import { TransactionType } from '@/core/constants/general';
 import customDialog from '@/core/services/dialog';
+import { useUserStore } from '@/stores/users/user';
+import { useAuthStore } from '@/stores/auth/auth';
 
 
 
@@ -34,17 +39,28 @@ const walletStore = useWalletStore();
 
 const transactionStore = useTransactionStore();
 
+const userStore = useUserStore();
+
+const authStore = useAuthStore();
+
 const { getTransactionListPaginated, getTransactionDetailPaginated } = storeToRefs(transactionStore)
+const { getFinancialDetail } = storeToRefs(userStore)
+
+const { getUserCurrency } = storeToRefs(authStore);
 
 onMounted(async () => {
-
-  await transactionStore.fetchTransactionListPaginated()
+  await refreshData()
   await walletStore.fetchWalletList()
   await transactionStore.fetchTransactionCategoryList(TransactionType.DEBIT)
   console.log(getTransactionListPaginated, "getTransactionListPaginated")
   // showTransactionModal()
 
 })
+
+const refreshData = async () => {
+  await userStore.fetchFinancialDetail()
+  await transactionStore.fetchTransactionListPaginated()
+}
 
 const handleEditTransaction = (transaction: TransactionDetail) => {
   console.log(transaction, "handleEditTransaction")
@@ -58,7 +74,7 @@ const handleDeleteTransaction = (transaction: TransactionDetail) => {
     message: "Are you sure you want to proceed?",
     onConfirm: async () => {
       await transactionStore.deleteTransaction(transaction.id)
-      await transactionStore.fetchTransactionListPaginated()
+      await refreshData()
     },
   });
 }

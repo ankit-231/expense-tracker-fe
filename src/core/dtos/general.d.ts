@@ -53,3 +53,7 @@ export interface IconDetail {
   name: string;
   class_name: string;
 }
+
+export interface FinancialDetail {
+  balance: number;
+}
