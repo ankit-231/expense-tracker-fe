@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import client from "@/core/services/client";
 import { api } from "@/core/api-endpoints/api";
 import type {
+  MonthlyStatisticsDetail,
   TransactionCategoryDetail,
   TransactionDetailPaginated,
   TransactionPaginated,
@@ -9,7 +10,7 @@ import type {
 } from "@/core/dtos/transaction";
 import toast from "@/core/services/toast";
 import router from "@/router";
-import type { TransactionType } from "@/core/constants/general";
+import { ChartTypeEnum, type TransactionType } from "@/core/constants/general";
 
 export const useTransactionStore = defineStore("transaction", {
   state: () => ({
@@ -18,6 +19,11 @@ export const useTransactionStore = defineStore("transaction", {
     transactionListPaginated: [] as TransactionPaginated[],
     transactionDetailPaginated: null as null | TransactionPaginated,
     transactionCategoryList: [] as TransactionCategoryDetail[],
+    monthlyStatisticsBarGraph: null as null | MonthlyStatisticsDetail,
+    monthlyStatisticsPieChart: {
+      credit: null as MonthlyStatisticsDetail | null,
+      debit: null as MonthlyStatisticsDetail | null,
+    },
   }),
 
   getters: {
@@ -35,6 +41,12 @@ export const useTransactionStore = defineStore("transaction", {
     },
     getTransactionCategoryList(state) {
       return state.transactionCategoryList;
+    },
+    getMonthlyStatisticsBarGraph(state) {
+      return state.monthlyStatisticsBarGraph;
+    },
+    getMonthlyStatisticsPieChart(state) {
+      return state.monthlyStatisticsPieChart;
     },
   },
 
@@ -133,6 +145,33 @@ export const useTransactionStore = defineStore("transaction", {
         .then((response) => {
           this.loadingStatus = false;
           this.transactionCategoryList = response.data.data;
+        })
+        .catch((error) => {
+          this.errors = error;
+          this.loadingStatus = false;
+          toast.error(error.response?.data?.message || "Error");
+        });
+    },
+    async fetchMonthlyStatistics(
+      year: number,
+      month: number,
+      chartType: ChartTypeEnum
+    ) {
+      this.errors = null;
+      this.loadingStatus = true;
+      await client
+        .get(api.transaction.statistics.monthly(year, month), {
+          params: { chart_type: chartType },
+        })
+        .then((response) => {
+          this.loadingStatus = false;
+          if (chartType === ChartTypeEnum.BAR_GRAPH) {
+            this.monthlyStatisticsBarGraph = response.data.data;
+          } else if (chartType === ChartTypeEnum.PIE_CHART_CREDIT) {
+            this.monthlyStatisticsPieChart.credit = response.data.data;
+          } else if (chartType === ChartTypeEnum.PIE_CHART_DEBIT) {
+            this.monthlyStatisticsPieChart.debit = response.data.data;
+          }
         })
         .catch((error) => {
           this.errors = error;

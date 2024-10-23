@@ -76,14 +76,8 @@ export const useAuthStore = defineStore("auth", {
           this.errors = error;
           console.log(error);
           this.loadingStatus = false;
-          const message =
-            error?.response?.data?.detail || "There was anda error";
-          toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: message,
-            life: 3000,
-          });
+          const message = error?.response?.data?.detail || "There was an error";
+          toast.error(message);
         });
     },
 
@@ -118,12 +112,7 @@ export const useAuthStore = defineStore("auth", {
         jwtServices.destroyAllTokens();
         this.isAuthenticated = false;
         // (this.role = ""), console.log("logged out");
-        toast.add({
-          severity: "info",
-          summary: "Info",
-          detail: "Logged Out",
-          life: 3000,
-        });
+        toast.info("Logged Out");
 
         router.push({ name: "home" });
         this.loadingStatus = false;

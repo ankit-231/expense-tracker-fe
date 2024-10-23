@@ -50,3 +50,14 @@ export type TransactionCategoryDetail = {
   category_type: TransactionType;
   icon: string;
 };
+
+export type MonthlyStatisticsDetail = {
+  labels: string[];
+  datasets: Array<{
+    label: string[];
+    backgroundColor: string;
+    borderColor: string;
+    fill: boolean;
+    data: number[];
+  }>;
+};

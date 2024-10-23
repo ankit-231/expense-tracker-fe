@@ -8,7 +8,6 @@ import FooterMenu from '@/components/navigation/FooterMenu.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { Breadcrumb } from "@/core/dtos/general";
 // import import_sidebar from '@/assets/js/sidebar';
-import { MainSideBarItems } from '@/core/services/sidebar-items/MainSidebarItems';
 import { useAuthStore } from '@/stores/auth/auth';
 import { storeToRefs } from 'pinia';
 

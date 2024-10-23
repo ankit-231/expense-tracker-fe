@@ -110,6 +110,9 @@ let { values, errors, handleSubmit, defineField, setErrors, setValues, validate,
 const setInitialValues = () => {
   setValues({
     transaction_type: TransactionType.DEBIT,
+    transaction_date_time: new Date(),
+    wallet: getWalletList.value ? getWalletList.value[0].id : null,
+    category: getTransactionCategoryList.value ? getTransactionCategoryList.value[0].id : null,
   })
   if (transaction.value) {
     let transactionDateTime = getTransactionDateTime(transaction.value.transaction_date, transaction.value.transaction_time)

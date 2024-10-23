@@ -38,5 +38,9 @@ export const api = {
       list: (category_type: TransactionType) =>
         `transactions/categories/list/${category_type}/`,
     },
+    statistics: {
+      monthly: (year: number, month: number) =>
+        `transactions/statistics/monthly/${year}/${month}/`,
+    },
   },
 };
