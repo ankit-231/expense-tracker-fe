@@ -10,6 +10,7 @@ import type { Breadcrumb } from "@/core/dtos/general";
 // import import_sidebar from '@/assets/js/sidebar';
 import { useAuthStore } from '@/stores/auth/auth';
 import { storeToRefs } from 'pinia';
+import HelpIcon from '@/components/general/HelpIcon.vue';
 
 const authStore = useAuthStore();
 
@@ -47,6 +48,7 @@ const role = localStorage.getItem('role');
     <div class="fixed bottom-0 w-[60%] h-[3%]">
       <FooterMenu />
     </div>
+    <HelpIcon />
   </div>
 </template>
 

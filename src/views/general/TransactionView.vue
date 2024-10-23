@@ -18,7 +18,7 @@
 </template>
 <script setup lang="ts">
 import TransactionDetailCard from '@/components/transaction/TransactionDetailCard.vue';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useTransactionStore } from '@/stores/transaction/transaction';
 import { storeToRefs } from 'pinia';
 import { useDialog } from 'primevue/usedialog';
@@ -30,6 +30,7 @@ import { TransactionType } from '@/core/constants/general';
 import customDialog from '@/core/services/dialog';
 import { useUserStore } from '@/stores/users/user';
 import { useAuthStore } from '@/stores/auth/auth';
+import { useKeyboardShortcut } from '@/core/composables/useKeyboardShortcut';
 
 
 
@@ -79,7 +80,10 @@ const handleDeleteTransaction = (transaction: TransactionDetail) => {
   });
 }
 
+const isAddTransactionOpen = ref(false)
+
 const showTransactionModal = (transaction: TransactionDetail | null = null) => {
+  isAddTransactionOpen.value = true
   dialog.open(TransactionAdd, {
     props: {
       header: 'Add Transaction',
@@ -95,8 +99,20 @@ const showTransactionModal = (transaction: TransactionDetail | null = null) => {
     data: {
       transaction: transaction,
       testing: 'test'
+    },
+    onClose: (event) => {
+      console.log(event, "dd")
+      isAddTransactionOpen.value = false
     }
   })
 }
+
+const handleTPress = () => {
+  if (isAddTransactionOpen.value) return
+  showTransactionModal()
+}
+
+useKeyboardShortcut("t", handleTPress)
+
 </script>
 <style></style>
