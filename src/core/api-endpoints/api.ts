@@ -22,7 +22,7 @@ export const api = {
   wallet: {
     detail: (walletId: number) => `wallets/detail/${walletId}/`,
     create: "wallets/create/",
-    list: "wallets/list/",
+    list: (wallet_type: string) => `wallets/list/${wallet_type}/`,
     update: (walletId: number) => `wallets/update/${walletId}/`,
     updateWalletStatus: (walletId: number) =>
       `wallets/update-status/${walletId}/`,
@@ -37,7 +37,12 @@ export const api = {
     delete: (transactionId: number) => `transactions/delete/${transactionId}/`,
     category: {
       list: (category_type: TransactionType) =>
-        `transactions/categories/list/${category_type}/`,
+        `transactions/category/list/${category_type}/`,
+      create: "transactions/category/create/",
+      update: (category_id: number) =>
+        `transactions/category/update/${category_id}/`,
+      delete: (category_id: number) =>
+        `transactions/category/delete/${category_id}/`,
     },
     statistics: {
       monthly: (year: number, month: number) =>

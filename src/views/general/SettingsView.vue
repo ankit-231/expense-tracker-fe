@@ -2,10 +2,16 @@
   <div>
     <h1 class=" text-3xl font-bold">Hi {{ getUserMe.username }}</h1>
     <div class=" p-2 rounded-md">
+      <div @click="$router.push({ name: 'category' })"
+        class="border-2 border-dashed border-surface shadow-sm hover:shadow-lg hover:cursor-pointer p-2 rounded-md font-bold">
+        Categories</div>
+    </div>
+    <div class=" p-2 rounded-md">
       <div @click="logout"
         class="border-2 border-dashed border-surface shadow-sm hover:shadow-lg hover:cursor-pointer p-2 rounded-md font-bold">
         Log Out</div>
     </div>
+
   </div>
 </template>
 

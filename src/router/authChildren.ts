@@ -46,15 +46,14 @@ const authChildren: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: "category",
+    name: "category",
+    component: () => import("@/views/general/CategoryView.vue"),
+  },
+  {
     path: "settings",
     name: "settings",
     component: () => import("@/views/general/SettingsView.vue"),
-    meta: {
-      // breadcrumbs: [
-      //   { label: "Home", url: "/" },
-      //   { label: "Dashboard" },
-      // ] as Breadcrumb[],
-    },
   },
 ];
 

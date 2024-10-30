@@ -48,6 +48,7 @@ export type TransactionCategoryDetail = {
   id: number;
   name: string;
   category_type: TransactionType;
+  icon_class: string;
   icon: string;
 };
 
@@ -60,4 +61,20 @@ export type MonthlyStatisticsDetail = {
     fill: boolean;
     data: number[];
   }>;
+};
+
+export type TransactionCategoryCreatePayload = {
+  name: string;
+  category_type: TransactionType;
+  icon: string;
+};
+
+export type TransactionCategoryUpdatePayload = {
+  name: string;
+  icon: number;
+};
+
+export type TransactionFetchParams = {
+  start_date?: string;
+  end_date?: string;
 };

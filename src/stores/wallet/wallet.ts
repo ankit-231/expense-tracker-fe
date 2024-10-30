@@ -32,13 +32,11 @@ export const useWalletStore = defineStore("wallet", {
   },
 
   actions: {
-    async fetchWalletList(params: { exclude_id: String } | {} = {}) {
+    async fetchWalletList(wallet_type: "all" | "enabled" = "all") {
       this.errors = null;
       this.loadingStatus = true;
       await client
-        .get(api.wallet.list, {
-          params: params,
-        })
+        .get(api.wallet.list(wallet_type))
         .then((response) => {
           this.walletList = response.data.data;
           // console.log(walletList);

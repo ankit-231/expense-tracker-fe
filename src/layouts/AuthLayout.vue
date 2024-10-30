@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, onBeforeMount } from 'vue';
-import Sidebar from '@/components/Frontend/Sidebar.vue';
 import Navbar from '@/components/Frontend/Navbar.vue';
 import LeftMenu from '@/components/navigation/LeftMenu.vue';
 import RightMenu from '@/components/navigation/RightMenu.vue';
 import FooterMenu from '@/components/navigation/FooterMenu.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { Breadcrumb } from "@/core/dtos/general";
-// import import_sidebar from '@/assets/js/sidebar';
 import { useAuthStore } from '@/stores/auth/auth';
 import { storeToRefs } from 'pinia';
 import HelpIcon from '@/components/general/HelpIcon.vue';

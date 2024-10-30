@@ -76,7 +76,7 @@ export const useAuthStore = defineStore("auth", {
           this.errors = error;
           console.log(error);
           this.loadingStatus = false;
-          const message = error?.response?.data?.detail || "There was an error";
+          const message = error?.response?.data?.message || "There was an error";
           toast.error(message);
         });
     },

@@ -11,7 +11,7 @@ export const useCoreStore = defineStore("core", {
   state: () => ({
     errors: null as null | any,
     loadingStatus: false,
-    iconList: [] as IconDetail[] | null,
+    iconList: [] as IconDetail[],
   }),
 
   getters: {
@@ -30,7 +30,7 @@ export const useCoreStore = defineStore("core", {
     async fetchIconList() {
       this.errors = null;
       this.loadingStatus = true;
-      this.iconList = null;
+      this.iconList = [];
       await client
         .get(api.core.icon.list)
         .then((response) => {

@@ -57,3 +57,14 @@ export const transactionCreateSchema = yup.object({
     .required("Transaction date and time is required")
     .typeError("Transaction date and time must be a string"),
 });
+
+export const categoryCreateSchema = yup.object({
+  name: yup.string().required("Name is required"),
+  category_type: yup.string().required("Transaction type is required"),
+  icon: yup.string().required("Icon is required"),
+});
+
+export const categoryUpdateSchema = yup.object({
+  name: yup.string().required("Name is required"),
+  icon: yup.string().required("Icon is required"),
+});

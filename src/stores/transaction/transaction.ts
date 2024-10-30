@@ -3,8 +3,11 @@ import client from "@/core/services/client";
 import { api } from "@/core/api-endpoints/api";
 import type {
   MonthlyStatisticsDetail,
+  TransactionCategoryCreatePayload,
   TransactionCategoryDetail,
+  TransactionCategoryUpdatePayload,
   TransactionDetailPaginated,
+  TransactionFetchParams,
   TransactionPaginated,
   TransactionPayload,
 } from "@/core/dtos/transaction";
@@ -51,11 +54,11 @@ export const useTransactionStore = defineStore("transaction", {
   },
 
   actions: {
-    async fetchTransactionListPaginated() {
+    async fetchTransactionListPaginated(params: TransactionFetchParams = {}) {
       this.errors = null;
       this.loadingStatus = true;
       await client
-        .get(api.transaction.listPaginated)
+        .get(api.transaction.listPaginated, { params: params })
         .then((response) => {
           this.transactionListPaginated = response.data.data;
           console.log(this.transactionListPaginated);
@@ -172,6 +175,58 @@ export const useTransactionStore = defineStore("transaction", {
           } else if (chartType === ChartTypeEnum.PIE_CHART_DEBIT) {
             this.monthlyStatisticsPieChart.debit = response.data.data;
           }
+        })
+        .catch((error) => {
+          this.errors = error;
+          this.loadingStatus = false;
+          toast.error(error.response?.data?.message || "Error");
+        });
+    },
+    async createTransactionCategory(body: TransactionCategoryCreatePayload) {
+      this.errors = null;
+      this.loadingStatus = true;
+      return await client
+        .post(api.transaction.category.create, body)
+        .then((response) => {
+          this.loadingStatus = false;
+          toast.success(response.data.message || "Created");
+          return true;
+        })
+        .catch((error) => {
+          this.errors = error;
+          this.loadingStatus = false;
+          toast.error(error.response?.data?.message || "Error");
+          return false;
+        });
+    },
+    async updateTransactionCategory(
+      categoryId: number,
+      body: TransactionCategoryUpdatePayload
+    ) {
+      this.errors = null;
+      this.loadingStatus = true;
+      return await client
+        .post(api.transaction.category.update(categoryId), body)
+        .then((response) => {
+          this.loadingStatus = false;
+          toast.success(response.data.message || "Updated");
+          return true;
+        })
+        .catch((error) => {
+          this.errors = error;
+          this.loadingStatus = false;
+          toast.error(error.response?.data?.message || "Error");
+          return false;
+        });
+    },
+    async deleteTransactionCategory(categoryId: number) {
+      this.errors = null;
+      this.loadingStatus = true;
+      await client
+        .delete(api.transaction.category.delete(categoryId))
+        .then((response) => {
+          this.loadingStatus = false;
+          toast.success(response.data.message || "Deleted");
         })
         .catch((error) => {
           this.errors = error;

@@ -5,7 +5,7 @@
       <!-- {{ errors }} -->
       <!-- {{ amount }} -->
       <!-- {{ getTransactionCategoryList }} -->
-      <div class="flex justify-start mb-4 border border-gray-300 rounded-md w-min">
+      <!-- <div class="flex justify-start mb-4 border border-gray-300 rounded-md w-min">
         <button type="button" class="px-4 py-2 rounded-md text-sm font-medium"
           :class="transaction_type === TransactionType.CREDIT ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'"
           @click="transaction_type = TransactionType.CREDIT">
@@ -16,7 +16,8 @@
           @click="transaction_type = TransactionType.DEBIT">
           Expense
         </button>
-      </div>
+      </div> -->
+      <CreditDebitChooser v-model="transaction_type" />
       <div class="mt-4">
         <label for="time" class="block text-sm font-medium text-gray-700">Time</label>
         <DatePicker v-tooltip.top="errors?.transaction_date_time" id="datepicker-12h" v-model="transaction_date_time"
@@ -67,7 +68,7 @@
             </template> -->
             <template #option="slotProps">
               <div class="flex items-center">
-                <WalletIcon class="mr-2" :icon-class="slotProps.option.icon" fontSize="20px" color="#058a9e" />
+                <WalletIcon class="mr-2" :icon-class="slotProps.option.icon_class" fontSize="20px" color="#058a9e" />
                 {{ slotProps.option.name }}
               </div>
             </template>
@@ -99,9 +100,9 @@ import { useForm } from 'vee-validate';
 import { transactionCreateSchema } from '@/core/schemas/general';
 import type { TransactionDetail, TransactionPayload } from '@/core/dtos/transaction';
 import { getTransactionDate, getTransactionDateTime, getTransactionTime } from '@/core/services/utilities';
-import { get } from 'node_modules/axios/index.cjs';
 import WalletIcon from '@/components/wallet/WalletIcon.vue';
 import { useUserStore } from '@/stores/users/user';
+import CreditDebitChooser from '@/components/transaction/CreditDebitChooser.vue';
 
 let { values, errors, handleSubmit, defineField, setErrors, setValues, validate, } = useForm({
   validationSchema: transactionCreateSchema,
@@ -112,7 +113,7 @@ const setInitialValues = () => {
   setValues({
     transaction_type: TransactionType.DEBIT,
     transaction_date_time: new Date(),
-    wallet: getWalletList.value ? getWalletList.value[0].id : null,
+    wallet: getWalletList.value.length > 0 ? getWalletList.value[0].id : null,
     category: getTransactionCategoryList.value ? getTransactionCategoryList.value[0].id : null,
   })
   if (transaction.value) {
@@ -157,8 +158,11 @@ const [note, noteAttrs] = defineField('note');
 const [transaction_date_time, transaction_date_timeAttrs] = defineField('transaction_date_time');
 const [category, categoryAttrs] = defineField('category');
 
-watch(transaction_type, () => {
-  transactionStore.fetchTransactionCategoryList(transaction_type.value)
+watch(transaction_type, async () => {
+  await transactionStore.fetchTransactionCategoryList(transaction_type.value)
+  setValues({
+    category: getTransactionCategoryList.value ? getTransactionCategoryList.value[0].id : null,
+  })
 })
 
 const handleAddTransaction = handleSubmit(async (values) => {

@@ -6,6 +6,22 @@
         <div class="text-sm font-bold">Balance: {{ getUserCurrency }} {{ getFinancialDetail.balance }}</div>
       </div>
       <div>
+        <DatePicker v-model="transactionDateRange" selectionMode="range" :manualInput="false" />
+        <span class="ml-2">
+          <!-- <Button severity="info" class="" label="Apply" @click="handleApplyFilter" /> -->
+          <Button icon="pi pi-check" v-tooltip.top="'Apply Filter'" text rounded aria-label="Filter"
+            @click="handleApplyFilter" severity="info" />
+          <Button v-if="appliedFilter" icon="pi pi-times" v-tooltip.top="'Clear Filter'" text rounded aria-label="Filter"
+            @click="clearFilter" severity="danger" />
+          <!-- <div v-if="appliedFilter"
+            class="ml-2 w-1 text-sm text-red-500 border-2 border-red-500 rounded-lg hover:cursor-pointer"
+            @click="clearFilter">x
+          </div> -->
+        </span>
+      </div>
+      <div>
+      </div>
+      <div>
         <Button @click="showTransactionModal()" class="ml-4" label="Add Transaction" />
 
       </div>
@@ -31,8 +47,9 @@ import customDialog from '@/core/services/dialog';
 import { useUserStore } from '@/stores/users/user';
 import { useAuthStore } from '@/stores/auth/auth';
 import { useKeyboardShortcut } from '@/core/composables/useKeyboardShortcut';
+import { getTransactionDate } from '@/core/services/utilities';
 
-
+const appliedFilter = ref(false)
 
 const dialog = useDialog();
 
@@ -49,9 +66,30 @@ const { getFinancialDetail } = storeToRefs(userStore)
 
 const { getUserCurrency } = storeToRefs(authStore);
 
+const transactionDateRange = ref()
+
+const handleApplyFilter = async () => {
+  if (!transactionDateRange.value) return
+  let start_date = getTransactionDate(transactionDateRange.value[0])
+  let end_date = getTransactionDate(transactionDateRange.value[1])
+  let params = {
+    start_date: start_date,
+    end_date: end_date
+  }
+  await transactionStore.fetchTransactionListPaginated(params)
+  console.log(transactionDateRange.value, "transactionDateRange.value")
+  appliedFilter.value = true
+}
+
+const clearFilter = () => {
+  transactionDateRange.value = null
+  appliedFilter.value = false
+  refreshData()
+}
+
 onMounted(async () => {
   await refreshData()
-  await walletStore.fetchWalletList()
+  await walletStore.fetchWalletList('enabled')
   await transactionStore.fetchTransactionCategoryList(TransactionType.DEBIT)
   console.log(getTransactionListPaginated, "getTransactionListPaginated")
   // showTransactionModal()

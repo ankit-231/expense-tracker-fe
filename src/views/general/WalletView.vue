@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="bg-white shadow-lg rounded-md p-4">
-      <h1 class="text-3xl font-bold mb-4">Your Wallets</h1>
+      <h1 class="text-3xl font-bold mb-4">Your Wallets/Accounts</h1>
       <WalletModal :wallets="getWalletList" @wallet-status-changed="changeWalletStatus" @edit-wallet="editWallet"
         @add-wallet="addWallet" @delete-wallet="deleteWallet" :icons="getIconList" v-if="getIconList" />
     </div>

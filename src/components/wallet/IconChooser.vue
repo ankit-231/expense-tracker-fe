@@ -6,7 +6,7 @@
       </slot>
     </div>
 
-    <Popover ref="op">
+    <!-- <Popover ref="op">
       {{ model }}
       <div class="p-2 w-64 flex flex-wrap gap-2">
         <div v-for="icon in icons" @click="model = icon"
@@ -15,7 +15,7 @@
           <i :class="icon.class_name"></i>
         </div>
       </div>
-    </Popover>
+    </Popover> -->
   </div>
 </template>
 
