@@ -31,3 +31,7 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## Node version
+
+v21.2.0 was used to create the project.
